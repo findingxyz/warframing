@@ -8,7 +8,7 @@
 
     onMount(async () => {
         const query = $page.url.searchParams.get('q');
-        const res = await fetch('/api/mods/search?q=' + query)
+        const res = await fetch('/api/mods/search?q=' + encodeURIComponent(query))
         mods = await res.json();
     });
 </script>
