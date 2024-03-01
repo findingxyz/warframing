@@ -15,5 +15,5 @@ warframeText c = T.elem c "-+'% \n"
               || isAlphaNum c
 
 normalizeSearch :: Text -> Text
-normalizeSearch = T.filter warframeText . T.toLower
+normalizeSearch = T.replace "+" "\\+" . T.filter warframeText . T.toLower
 
