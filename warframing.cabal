@@ -1,0 +1,57 @@
+cabal-version:      3.0
+name:               warframing
+
+version:            0.1.0.0
+
+license:            NONE
+
+author:             findingxyz
+
+build-type:         Simple
+
+extra-doc-files:    CHANGELOG.md
+
+common warnings
+    ghc-options: -Wall
+
+library
+    hs-source-dirs:   src
+
+    build-depends:    base >=4.17.2.1,
+                      text ^>= 2.1,
+                      warp ^>=3.3.31,
+                      aeson ^>=2.2.1.0,
+                      attoparsec ^>=0.14.4,
+                      bytestring ^>=0.12.1.0,
+                      regex-tdfa ^>=1.3.2.2,
+                      servant-server ^>=0.20,
+                      unordered-containers ^>=0.2.20,
+
+    exposed-modules:  Warframing.Mod.Mod
+                      Warframing.Mod.Search
+                      Warframing.Search.Parser
+                      Warframing.Text
+                      Warframing.Api
+
+    default-language: GHC2021
+
+executable warframing
+    import:           warnings
+
+    main-is:          Main.hs
+
+    build-depends:    base,
+                      text,
+                      warp,
+                      aeson,
+                      wai-cors,
+                      attoparsec,
+                      bytestring,
+                      regex-tdfa,
+                      servant-server,
+                      unordered-containers,
+                      warframing
+
+    hs-source-dirs:   app
+
+    default-language: GHC2021
