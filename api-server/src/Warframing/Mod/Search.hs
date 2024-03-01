@@ -80,7 +80,7 @@ minCapacitySearch :: Relation -> Search
 minCapacitySearch r q = HM.filter (\(_, x) ->
     case baseDrain x of
         Just x' -> let r' = relate r in
-                       case TR.decimal q of
+                       case TR.signed TR.decimal q of
                            Right (d, _) -> x' `r'` d
                            _ -> False
         Nothing -> False)
@@ -90,7 +90,7 @@ maxCapacitySearch r q = HM.filter (\(_, x) ->
     case (baseDrain x, fusionLimit x) of
         (Just base, Just maxRank) ->
             let r' = relate r     in
-                case TR.decimal q of
+                case TR.signed TR.decimal q of
                     Right (d, _) -> (if base < 0 then base - maxRank else base + maxRank) `r'` d
                     _            -> False
         (_, _) -> False)

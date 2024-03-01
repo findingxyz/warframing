@@ -48,7 +48,7 @@ tagged = Tagged <$> word <*> (toRelation <$> takeWhile1 (not . (\c -> warframeTe
     <?> "tagged"
 
 word :: Parser Text
-word = takeWhile1 isAlphaNum
+word = takeWhile1 warframeText
     <?> "word"
 
 literal :: Parser Text

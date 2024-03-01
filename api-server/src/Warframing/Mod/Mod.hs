@@ -8,6 +8,7 @@ module Warframing.Mod.Mod (
 ) where
 
 import GHC.Generics
+import Data.Maybe (isNothing)
 
 import Data.Aeson
 
@@ -54,6 +55,7 @@ data Mod = Mod {
   , drops :: Maybe [Drop]
   , excludeFromCodex :: Maybe Bool
   , fusionLimit :: Maybe Int
+  , imageName :: Maybe Text
   , introduced :: Maybe Introduced
   , isAugment :: Maybe Bool
   , isExilus :: Maybe Bool
@@ -78,6 +80,7 @@ instance FromJSON Mod where
         <*> v .:? "drops"
         <*> v .:? "excludeFromCodex"
         <*> v .:? "fusionLimit"
+        <*> v .:? "imageName"
         <*> v .:? "introduced"
         <*> v .:? "isAugment"
         <*> v .:? "isExilus"
@@ -120,6 +123,7 @@ makeNormalizedModMap =
         drops'
         excludeFromCodex'
         fusionLimit'
+        imageName'
         introduced'
         isAugment'
         isExilus'
@@ -135,7 +139,7 @@ makeNormalizedModMap =
                                        (normalizeMod uniqueName')
                                        (normalizeMod name')
                                        (normalizeMod modType')
-                                       (if compatName' == Nothing then Nothing else normalizeMod <$> compatName')
+                                       (if isNothing compatName' then Nothing else normalizeMod <$> compatName')
                                        (normalizeMod <$> description')
                                        (normalizeMod . levelStatConcat <$> levelStats')
                                        (normalizeMod <$> polarity')

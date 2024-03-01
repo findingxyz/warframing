@@ -11,7 +11,7 @@ import Data.Text (Text)
 import qualified Data.Text as T
 
 warframeText :: Char -> Bool
-warframeText c = T.elem c "-+<_>'% \n"
+warframeText c = T.elem c "-+'% \n"
               || isAlphaNum c
 
 normalizeSearch :: Text -> Text
