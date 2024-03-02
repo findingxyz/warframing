@@ -70,14 +70,24 @@ polaritySearch q = HM.filter (\(x, _) ->
 raritySearch :: Relation -> Search
 raritySearch r q = HM.filter (\(x, _) ->
     case normalRarity x of
-        --Just x' -> x' =~ q
         Just x' -> case (toRarity x', toRarity q) of
                        (Just x'', Just q') -> let r' = relate r in x'' `r'` q'
                        _ -> False
         Nothing -> False)
 
-minCapacitySearch :: Relation -> Search
-minCapacitySearch r q = HM.filter (\(_, x) ->
+capacitySearch :: Search
+capacitySearch q = HM.filter (\(_, x) ->
+    case (baseDrain x, fusionLimit x) of
+        (Just base, Just maxRank) ->
+            let fused = if base < 0 then base - maxRank else base + maxRank in
+            let (least, most) = (min base fused, max base fused) in
+                case TR.signed TR.decimal q of
+                    Right (d, _) -> d >= least && d <= most
+                    _            -> False
+        (_, _) -> False)
+
+baseCapacitySearch :: Relation -> Search
+baseCapacitySearch r q = HM.filter (\(_, x) ->
     case baseDrain x of
         Just x' -> let r' = relate r in
                        case TR.signed TR.decimal q of
@@ -90,8 +100,9 @@ maxCapacitySearch r q = HM.filter (\(_, x) ->
     case (baseDrain x, fusionLimit x) of
         (Just base, Just maxRank) ->
             let r' = relate r     in
+            let fused = if base < 0 then base - maxRank else base + maxRank in
                 case TR.signed TR.decimal q of
-                    Right (d, _) -> (if base < 0 then base - maxRank else base + maxRank) `r'` d
+                    Right (d, _) -> fused `r'` d
                     _            -> False
         (_, _) -> False)
 
@@ -100,7 +111,6 @@ compatSearch q = HM.filter (\(x, _) ->
     case normalCompatName x of
         Just x' -> x' =~ q
         Nothing -> False)
-
 
 noSearch :: Search
 noSearch _ _ = HM.empty
@@ -117,8 +127,10 @@ modSearch qs mm = foldr whatSearch mm qs
               "description" -> levelStatSearch
               "r" -> raritySearch r
               "rarity" -> raritySearch r
-              "c" -> minCapacitySearch r
-              "capacity" -> minCapacitySearch r
+              "c" -> capacitySearch
+              "capacity" -> capacitySearch
+              "b" -> baseCapacitySearch r
+              "basecapacity" -> baseCapacitySearch r
               "m" -> maxCapacitySearch r
               "maxcapacity" -> maxCapacitySearch r
               "f" -> compatSearch
