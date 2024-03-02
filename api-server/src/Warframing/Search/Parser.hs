@@ -14,7 +14,7 @@ import Data.Text (Text)
 
 import Data.Attoparsec.Text
 
-import Warframing.Text (warframeText)
+import Warframing.Text (warframeText, _warframeText)
 
 data Relation = LT' | LTEQ | EQ' | GTEQ | GT' | Bill
     deriving Show
@@ -44,11 +44,11 @@ untagged = Untagged <$> term
     <?> "untagged"
 
 tagged :: Parser Query
-tagged = Tagged <$> word <*> (toRelation <$> takeWhile1 (not . (\c -> warframeText c || (c == '"')))) <*> term
+tagged = Tagged <$> word <*> (toRelation <$> takeWhile1 (not . warframeText)) <*> term
     <?> "tagged"
 
 word :: Parser Text
-word = takeWhile1 warframeText
+word = takeWhile1 _warframeText
     <?> "word"
 
 literal :: Parser Text
