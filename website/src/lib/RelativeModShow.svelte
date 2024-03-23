@@ -1,5 +1,6 @@
 <script>
     export let modData;
+    export let showFusing = false;
 
     let frames = {'Common': 'Bronze', 'Uncommon': 'Silver', 'Rare': 'Gold', 'Legendary': 'Legendary', 'Riven': 'Omega', 'Immortal': 'Immortal'};
 
@@ -84,66 +85,70 @@
     }
 </script>
 
-<!--
-<button on:click={fuseLeast}>
-  --
-</button>
-<button on:click={fuseLess}>
-  -
-</button>
-<button on:click={fuseMore}>
-  +
-</button>
-<button on:click={fuseMost}>
-  ++
-</button>
--->
-
-<div class="modshow">
-    <img src={icon} alt="background" class="modbit bgicon" />
-    <div class="shadow"></div>
-    <div class="modbit modtext" style="background-image: url({background});">
-        <div style="height: 8px;"></div>
-        <div><span class="modname">{modName}</span></div>
-        <div class="modstat">
-            {#if levelStats}
-                {#each levelStats.at(fused).stats as stat}
-                    <span>{@html stat.replace(/<[A-Z_]*>/g, angleBracket)}</span><br>
-                    <!--<span>{stat}</span><br>-->
-                {/each}
-            {:else}
-                <span>{description}</span>
-            {/if}
+{#if modData}
+    {#if showFusing}
+        <div id="fusing">
+            <button on:click={fuseLeast}>
+            --
+            </button>
+            <button on:click={fuseLess}>
+            -
+            </button>
+            <button on:click={fuseMore}>
+            +
+            </button>
+            <button on:click={fuseMost}>
+            ++
+            </button>
         </div>
-        <div style="height: 46px;"></div>
-    </div>
-    <img src={bottomFrame} alt="background" class="modbit bottomFrame" style="top: {bottomFrameOffset}px;" />
-    <img src={topRightBacker} alt="background" class="modbit topRightBacker" />
-    <img src={polarity} alt="background" class="modbit polarity" />
-    <div class="modbit capacity"><span>{baseCapacity > 0 ? baseCapacity + fused: baseCapacity - fused}</span></div>
-    <img src={topFrame} alt="background" class="modbit topFrame" />
-    <img src={lowerTab} alt="background" class="modbit lowerTab" />
-    <div class="modbit compat"><p>{compatName}</p></div>
-    {#if header}
-        <img src={header} alt="background" class="modbit header" />
     {/if}
-    {#if fused === fusionLimit}
-        <img src={rankCompleteLine} alt="background" class="modbit rankCompleteLine" />
-    {/if}
-    <div class="modbit rankslotrows">
-        {#each [...Array(fusionLimit).keys()] as _, i}
-            {#if i >= fused}
-                <img src={rankSlotEmpty} alt="background" />
-            {:else}
-                <img src={rankSlotActive} alt="background" />
-            {/if}
-        {/each}
+
+    <div class="modshow">
+        <img src={icon} alt="background" class="modbit bgicon" />
+        <div class="shadow"></div>
+        <div class="modbit modtext" style="background-image: url({background});">
+            <div style="height: 8px;"></div>
+            <div><span class="modname">{modName}</span></div>
+            <div class="modstat">
+                {#if levelStats}
+                    {#each levelStats.at(fused).stats as stat}
+                        <span>{@html stat.replace(/<[A-Z_]*>/g, angleBracket)}</span><br>
+                        <!--<span>{stat}</span><br>-->
+                    {/each}
+                {:else}
+                    <span>{description}</span>
+                {/if}
+            </div>
+            <div style="height: 46px;"></div>
+        </div>
+        <img src={bottomFrame} alt="background" class="modbit bottomFrame" style="top: {bottomFrameOffset}px;" />
+        <img src={topRightBacker} alt="background" class="modbit topRightBacker" />
+        <img src={polarity} alt="background" class="modbit polarity" />
+        <div class="modbit capacity"><span>{baseCapacity > 0 ? baseCapacity + fused: baseCapacity - fused}</span></div>
+        <img src={topFrame} alt="background" class="modbit topFrame" />
+        <img src={lowerTab} alt="background" class="modbit lowerTab" />
+        <div class="modbit compat"><p>{compatName}</p></div>
+        {#if header}
+            <img src={header} alt="background" class="modbit header" />
+        {/if}
+        {#if fused === fusionLimit}
+            <img src={rankCompleteLine} alt="background" class="modbit rankCompleteLine" />
+        {/if}
+        <div class="modbit rankslotrows">
+            {#each [...Array(fusionLimit).keys()] as _, i}
+                {#if i >= fused}
+                    <img src={rankSlotEmpty} alt="background" />
+                {:else}
+                    <img src={rankSlotActive} alt="background" />
+                {/if}
+            {/each}
+        </div>
+        <img src={cornerLights} alt="background" class="modbit cornerLightsR" />
+        <img src={cornerLights} alt="background" class="modbit cornerLightsL flipped" />
+        <img src={sideLight} alt="background" class="modbit sideLightR" />
+        <img src={sideLight} alt="background" class="modbit sideLightL flipped" />
     </div>
-    <img src={cornerLights} alt="background" class="modbit cornerLightsR" />
-    <img src={cornerLights} alt="background" class="modbit cornerLightsL flipped" />
-    <img src={sideLight} alt="background" class="modbit sideLightR" />
-    <img src={sideLight} alt="background" class="modbit sideLightL flipped" />
-</div>
+{/if}
 
 <style>
     .modshow {
