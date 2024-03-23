@@ -14,7 +14,7 @@ import qualified Data.HashMap.Strict as HM
 
 import Warframing.Mod.Mod
 import Warframing.Search.Parser (queries)
-import Warframing.Mod.Search (modSearch)
+import Warframing.Mod.Search (modSearch, getUniqueMod)
 
 type ModAPI = "api" :> ("mods" :> "search" :> QueryParam "q" Text :> Get '[JSON] (Headers '[Header "Access-Control-Allow-Origin" Text] [Mod])
                    :<|> "mod" :> QueryParam "q" Text :> Get '[JSON] (Headers '[Header "Access-Control-Allow-Origin" Text] (Maybe Mod)))
@@ -36,10 +36,4 @@ modServer mm = modsServe :<|> modServe
                   Left e -> error ("whoops: " ++ e)
           modServe mquery = return $ addHeader "*" $ case mquery of
               Nothing -> Nothing
-              Just q  -> case parseOnly queries q of
-                  Right q' -> headMaybe . map snd . HM.elems . modSearch q' $ mm
-                  Left e -> error ("whoops: " ++ e)
-
-headMaybe :: [a] -> Maybe a
-headMaybe [] = Nothing
-headMaybe xs = Just $ head xs
+              Just q  -> getUniqueMod q mm

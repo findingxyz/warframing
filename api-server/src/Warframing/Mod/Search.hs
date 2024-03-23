@@ -1,7 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Warframing.Mod.Search (
-    modSearch
+    modSearch,
+    getUniqueMod
 ) where
 
 import Data.Text (Text)
@@ -29,6 +30,11 @@ toRarity "r" = Just Rare
 toRarity "legendary" = Just Legendary
 toRarity "l" = Just Legendary
 toRarity _ = Nothing
+
+getUniqueMod :: Text -> ModMap -> Maybe Mod
+getUniqueMod q mm = case HM.lookup q mm of
+                        Nothing -> Nothing
+                        Just (_, m) -> Just m
 
 type Search = Text -> ModMap -> ModMap
 
