@@ -6,7 +6,7 @@ Right now, this searches for mods.
 
 `./website/` provides an interface (website) to the api server. It also contains a guide on search syntax.
 
-## Future features that might stay in the future
+## Future features
 
 - A better guide. Examples are clear.
     - In a search, tell the user what the query is doing. e.g. `
@@ -26,8 +26,6 @@ Right now, this searches for mods.
 
 ## Running
 
-How to run???
-
 ### API
 
 Go into `./api-server/` and run `cabal run`. Or `cabal build` followed by `cabal install`.
@@ -36,6 +34,3 @@ Go into `./api-server/` and run `cabal run`. Or `cabal build` followed by `cabal
 
 Go into `./website/`, run `npm install` followed by `npm run dev`, or `npm run build`. Or use those SvelteKit adapters.
 
-### legs
-
-walk, but faster and with both feet in the air, otherwise it's ~~speed walking~~ race walking.
